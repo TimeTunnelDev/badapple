@@ -41,4 +41,8 @@
 ..\obj\timer.o: D:\Application\Keil_v5_ARM\ARM\ARMCC\Bin\..\include\stdio.h
 ..\obj\timer.o: ..\HARDWARE\LCD\lcd.h
 ..\obj\timer.o: D:\Application\Keil_v5_ARM\ARM\ARMCC\Bin\..\include\stdlib.h
-..\obj\timer.o: ..\HARDWARE\DCMI\dcmi.h
+..\obj\timer.o: ..\HARDWARE\RingBuff\RingBuff.h
+..\obj\timer.o: ..\FATFS\exfuns\exfuns.h
+..\obj\timer.o: ..\FATFS\src\ff.h
+..\obj\timer.o: ..\FATFS\src\integer.h
+..\obj\timer.o: ..\FATFS\src\ffconf.h

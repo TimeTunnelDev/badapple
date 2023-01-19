@@ -17,8 +17,13 @@
 //修改说明
 //无
 ////////////////////////////////////////////////////////////////////////////////// 	
- 
-void usart2_init(u32 pclk1,u32 bound); 
+
+
+#define RECEIVE_SIZE 4096
+
+
+extern uint8_t ReceiveBuffer1_Status ; 
+void usart2_init(u32 bound); 
 #endif	   
 
 

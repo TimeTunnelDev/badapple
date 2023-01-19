@@ -52,7 +52,8 @@ u8 exfuns_init(void)
 	}
 	file=(FIL*)mymalloc(SRAMIN,sizeof(FIL));		//为file申请内存
 	ftemp=(FIL*)mymalloc(SRAMIN,sizeof(FIL));		//为ftemp申请内存
-	fatbuf=(u8*)mymalloc(SRAMIN,512);				//为fatbuf申请内存
+	fatbuf=(u8*)mymalloc(SRAMIN,SingleWrite);				//为fatbuf申请内存
+	
 	if(i==_VOLUMES&&file&&ftemp&&fatbuf)return 0;  //申请有一个失败,即失败.
 	else return 1;	
 }

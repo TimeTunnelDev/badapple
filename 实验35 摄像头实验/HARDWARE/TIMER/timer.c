@@ -2,7 +2,8 @@
 #include "led.h"
 #include "usart.h"
 #include "lcd.h"
-#include "dcmi.h" 
+//#include "dcmi.h" 
+#include "RingBuff.h"
 //////////////////////////////////////////////////////////////////////////////////	 
 //本程序只供学习使用，未经作者许可，不得用于其它任何用途
 //ALIENTEK STM32F407开发板
@@ -15,10 +16,8 @@
 //Copyright(C) 广州市星翼电子科技有限公司 2014-2024
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 	 
+extern  u16 rcnt;
 
-extern u8 ov_frame;
-extern volatile u16 jpeg_data_len;
-u8 a[3]=0;
 
 //通用定时器3中断初始化
 //arr：自动重装值。
@@ -44,19 +43,21 @@ void TIM3_Int_Init(u16 arr,u16 psc)
 	TIM_Cmd(TIM3,ENABLE); //使能定时器3
 	
 	NVIC_InitStructure.NVIC_IRQChannel=TIM3_IRQn; //定时器3中断
-	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=0x01; //抢占优先级1
+	NVIC_InitStructure.NVIC_IRQChannelPreemptionPriority=2; //抢占优先级1
 	NVIC_InitStructure.NVIC_IRQChannelSubPriority=0x03; //子优先级3
 	NVIC_InitStructure.NVIC_IRQChannelCmd=ENABLE;
 	NVIC_Init(&NVIC_InitStructure);
 	
 }
 
+
 //定时器3中断服务函数
 void TIM3_IRQHandler(void)
 {
 	if(TIM_GetITStatus(TIM3,TIM_IT_Update)==SET) //溢出中断
 	{
-
+//		LCD_DisplayNum(1,1,(u32)ringBuff.Lenght,4,24,1);
+//		BEEP=!BEEP;
 	}
 	TIM_ClearITPendingBit(TIM3,TIM_IT_Update);  //清除中断标志位
 }

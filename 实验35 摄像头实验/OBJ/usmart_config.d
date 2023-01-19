@@ -38,6 +38,3 @@
 ..\obj\usmart_config.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\usmart_config.o: ..\SYSTEM\delay\delay.h
 ..\obj\usmart_config.o: ..\SYSTEM\sys\sys.h
-..\obj\usmart_config.o: ..\HARDWARE\OV2640\ov2640.h
-..\obj\usmart_config.o: ..\HARDWARE\OV2640\sccb.h
-..\obj\usmart_config.o: ..\HARDWARE\DCMI\dcmi.h

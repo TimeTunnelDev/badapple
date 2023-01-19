@@ -15,6 +15,8 @@
 //All rights reserved									  
 ////////////////////////////////////////////////////////////////////////////////// 	
 
+
+#define SingleWrite 3072
 extern FATFS *fs[_VOLUMES];  
 extern FIL *file;	 
 extern FIL *ftemp;	 

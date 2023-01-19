@@ -51,3 +51,7 @@
 ..\obj\main.o: ..\FATFS\src\integer.h
 ..\obj\main.o: ..\FATFS\src\ffconf.h
 ..\obj\main.o: ..\FATFS\exfuns\exfuns.h
+..\obj\main.o: ..\HARDWARE\RingBuff\RingBuff.h
+..\obj\main.o: ..\HARDWARE\USART2\usart2.h
+..\obj\main.o: ..\HARDWARE\EXTI\exti.h
+..\obj\main.o: ..\HARDWARE\TIMER\timer.h

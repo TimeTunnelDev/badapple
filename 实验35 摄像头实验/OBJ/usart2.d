@@ -37,3 +37,8 @@
 ..\obj\usart2.o: ..\FWLIB\inc\stm32f4xx_fsmc.h
 ..\obj\usart2.o: ..\HARDWARE\USART2\usart2.h
 ..\obj\usart2.o: D:\Application\Keil_v5_ARM\ARM\ARMCC\Bin\..\include\stdio.h
+..\obj\usart2.o: ..\FATFS\exfuns\exfuns.h
+..\obj\usart2.o: ..\FATFS\src\ff.h
+..\obj\usart2.o: ..\FATFS\src\integer.h
+..\obj\usart2.o: ..\FATFS\src\ffconf.h
+..\obj\usart2.o: ..\HARDWARE\RingBuff\RingBuff.h
