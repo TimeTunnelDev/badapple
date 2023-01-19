@@ -40,7 +40,7 @@ u16 temp_cnt=0;
 #define OLED_HEIGHT  320
 /*用于显示的缓存区*/
 //uint8_t framebuffer[PIC_SIZE] = {1};
-u16 *framebuffer;
+u16 framebuffer[2];
 int sd_show_picture_bin(const char *path)
 {
     UINT br;
@@ -49,41 +49,47 @@ int sd_show_picture_bin(const char *path)
     int file_size ;
     FRESULT res ;
 		int i;
-		uint8_t cnt=0;
+		uint32_t cnt=0;
 		uint16_t TEMP=0;
     /*1.打开传进来的Fatfs文件路径: path*/
     res = f_open(&fil, path, FA_READ);
 
     if(FR_OK != res)
-        return -1;
+		{
+        return -1;			
+		}
+
 
     /*2.计算这个文件的大小*/
     file_size = f_size(&fil);
+		printf("文件尺寸为%d",file_size);
     /*3.初始化偏移变量为0*/
     offset = 0 ;
+		LCD_SetCursor(0,0); //设置光标位置 
+		LCD_WriteGRAM();        //开始写入GRAM
+
 
     /*4.计算bin文件里一共包含多少张图片，然后不断的给LCD进行显示*/
-    for(i = 0 ; i < file_size /( PIC_SIZE /2 ) ; i++)
+    while(cnt<240*320)
     {
-        /*5.读取一张图片,一张图片的大小是PIC_SIZE，
-        		将读取出来的图片存放到缓存区framebuffer数组里*/
-        res = f_read(&fil, framebuffer, PIC_SIZE/2, &br);
+        res = f_read(&fil, (void *)framebuffer, 2, &br);
 
         if(FR_OK != res)
             return -2;
 
-        /*6.将整个数组赋值给显示接口，显示图片*/
-        LCD_Draw_Picture(DISPLAY_START_X, DISPLAY_START_Y+TEMP, OLED_WIDTH, OLED_HEIGHT+(TEMP-OLED_HEIGHT/2), framebuffer);
+				LCD_DATA=*framebuffer;
         /*7.将偏移往后加PIC_SIZE/2*/
 				cnt++;
-				cnt=cnt%2; //cnt只取0和1
-				TEMP=(cnt%2)?(OLED_HEIGHT/2):0;
-				
-        offset += PIC_SIZE/2;
+
+
+        offset += 2;
         res = f_lseek(&fil, offset);
 
         if(FR_OK != res)
+				{
             return -3;
+					
+				}
     }
 
     /*8.关闭文件描述符*/
@@ -124,7 +130,7 @@ int main(void)
  	exfuns_init();							//为fatfs相关变量申请内存				 
 	p=fatbuf;
   res=f_mount(fs[0],"0:",1); 					//挂载SD卡 
-	framebuffer=(u16 *)mymalloc(SRAMIN,PIC_SIZE/2);//由于一帧图像太大，故每次从SD卡读取半帧图像
+//	framebuffer=(u16 *)mymalloc(SRAMIN,PIC_SIZE/2);//由于一帧图像太大，故每次从SD卡读取半帧图像
 
 //	res=f_open (&fil,"0:/badapple.bin", FA_WRITE|FA_CREATE_ALWAYS		);
 //	res=f_open (&fil,"0:/true_test.bin", FA_WRITE|FA_CREATE_ALWAYS		);
@@ -154,8 +160,8 @@ int main(void)
 //		BEEP=1;
 //		delay_ms(600);
 //		BEEP=0;
-		sd_show_picture_bin("0:/true_test.bin");
-	 
+		if(sd_show_picture_bin("0:/true_test.bin")!=0)
+			printf ("show_picture error");
 	
 	while(1);
 }
