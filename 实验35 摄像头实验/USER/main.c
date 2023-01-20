@@ -70,7 +70,7 @@ int sd_show_picture_bin(const char *path)
 
 
     /*4.计算bin文件里一共包含多少张图片，然后不断的给LCD进行显示*/
-    while(cnt<240*320)
+    while(cnt<file_size/2)
     {
         res = f_read(&fil, (void *)framebuffer, 2, &br);
 
@@ -125,7 +125,7 @@ int main(void)
  	BRUSH_COLOR=RED;//设置字体为红色    
  	while(SD_Init())//检测不到SD卡
 	{
-
+		printf("SD_Init error\r\n");
 	}
  	exfuns_init();							//为fatfs相关变量申请内存				 
 	p=fatbuf;
@@ -160,7 +160,7 @@ int main(void)
 //		BEEP=1;
 //		delay_ms(600);
 //		BEEP=0;
-		if(sd_show_picture_bin("0:/true_test.bin")!=0)
+		if(sd_show_picture_bin("0:/badapple.bin")!=0)
 			printf ("show_picture error");
 	
 	while(1);
