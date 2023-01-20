@@ -40,7 +40,8 @@ u16 temp_cnt=0;
 #define OLED_HEIGHT  320
 /*用于显示的缓存区*/
 //uint8_t framebuffer[PIC_SIZE] = {1};
-u16 framebuffer[2];
+u16 framebuffer[480*10];
+u16 Q=0;
 int sd_show_picture_bin(const char *path)
 {
     UINT br;
@@ -70,19 +71,23 @@ int sd_show_picture_bin(const char *path)
 
 
     /*4.计算bin文件里一共包含多少张图片，然后不断的给LCD进行显示*/
-    while(cnt<file_size/2)
+    while(cnt<file_size/(480*10))
     {
-        res = f_read(&fil, (void *)framebuffer, 2, &br);
+        res = f_read(&fil, (void *)framebuffer, 480*10, &br);
 
         if(FR_OK != res)
             return -2;
-
-				LCD_DATA=*framebuffer;
+				Q=0;
+				while(Q<480*10/2)
+				{
+					LCD_DATA=framebuffer[Q];
+					Q++;				
+				}
         /*7.将偏移往后加PIC_SIZE/2*/
 				cnt++;
 
 
-        offset += 2;
+        offset += 480*10;
         res = f_lseek(&fil, offset);
 
         if(FR_OK != res)
@@ -130,36 +135,7 @@ int main(void)
  	exfuns_init();							//为fatfs相关变量申请内存				 
 	p=fatbuf;
   res=f_mount(fs[0],"0:",1); 					//挂载SD卡 
-//	framebuffer=(u16 *)mymalloc(SRAMIN,PIC_SIZE/2);//由于一帧图像太大，故每次从SD卡读取半帧图像
 
-//	res=f_open (&fil,"0:/badapple.bin", FA_WRITE|FA_CREATE_ALWAYS		);
-//	res=f_open (&fil,"0:/true_test.bin", FA_WRITE|FA_CREATE_ALWAYS		);
-    
-
-//********************end***************************/
-//	while(Flag_WriteFinsh==0)
-//	{
-
-//		if(ReceiveBuffer1_Status==1) //每接收4096字节数据就开始写入SD卡
-//		{
-//			ReceiveBuffer1_Status=0;
-//			while(p-fatbuf<SingleWrite)
-//			{
-//				Read_RingBuff(p);
-//				p++;
-//			}
-//			p=fatbuf;
-//			f_write(&fil,(const void *)fatbuf,SingleWrite,&bww);
-//			number++;
-//			printf("第%d次写入SD卡完成",number);
-//		}
-//		
-//	}
-//		f_close(&fil);
-
-//		BEEP=1;
-//		delay_ms(600);
-//		BEEP=0;
 		if(sd_show_picture_bin("0:/badapple.bin")!=0)
 			printf ("show_picture error");
 	
